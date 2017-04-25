@@ -21,7 +21,7 @@ class Welcome extends React.Component {
           <li>2. We need a <span className="component-name"><b>NewUser</b></span> component, also create a button above the table to redirect the user to the <i>newUser</i> page in order to create the new user.</li>
           <li>3. We need a <span className="component-name"><b>EditUser</b></span> component, also add an edit button in each row of the table and perform a redirection to <i>editUser</i> the edit user page</li>
           <li>4. We need a <span className="component-name"><b>RemoveUser</b></span> component in order to remove an user, that means, there is a remove button in each row of the table,<b><i> note: use the state property to disable an user</i></b>,<i> remember, inmmutability is very important!</i> </li>
-          <li>5. Indent using a tab with 2 spaces </li>
+          <li>5. Control the data flow using redux, but add some data persistence using mongodb, the idea is, if I refresh the page I should be able to see the edited, added , ande removeD records</li>
           <li>6. Show us your unit testing skills and write some test!</li>
         </ul>
       </div>
