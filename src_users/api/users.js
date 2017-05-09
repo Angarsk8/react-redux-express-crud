@@ -1,40 +1,35 @@
-// API Users static class
-export default class ApiUsers {
-  // get a list of users
-  static getList() {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        // build some dummy users list
-        let users = [];
-        for (let x = 1; x <= 28; x++) {
-          users.push({
-            id: x,
-            username: 'Johny ' + x,
-            job: 'Employee ' + x,
-          });
-        }
-        resolve(users);
-      }, 1000);
-    });
-  }
+import {
+  apiURL,
+  httpGet,
+  httpPost,
+  httpUpdate,
+  httpDelete
+} from '../utils/http'
 
-  // add/edit a user
-  static addEdit() {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        // do something here
-        resolve();
-      }, 1000);
-    });
-  }
+export default {
+  getUsers,
+  getUser,
+  createUser,
+  updateUser,
+  deleteUser
+}
 
-  // delete a user
-  static delete() {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        // do something here
-        resolve();
-      }, 500);
-    });
-  }
+export function getUsers() {
+  return httpGet(`${apiURL}/users`)
+}
+
+export function getUser(id) {
+  return httpGet(`${apiURL}/users/${id}`)
+}
+
+export function createUser(user) {
+  return httpPost(`${apiURL}/users`, user)
+}
+
+export function updateUser(id, changes) {
+  return httpUpdate(`${apiURL}/users/${id}`, changes)
+}
+
+export function deleteUser(id) {
+  return httpDelete(`${apiURL}/users/${id}`)
 }

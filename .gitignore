@@ -1,4 +1,5 @@
-.idea/
-node_modules/
-public/js/
-public/css/
+/.idea
+/node_modules
+/public/js
+/public/css
+/.vscode

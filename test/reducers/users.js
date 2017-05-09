@@ -1,107 +1,90 @@
-import assert from "assert";
-import users from "../../src_users/reducers/users";
+import assert from "assert"
+import {
+  FETCH_USERS_SUCCESS,
+  FETCH_USER_SUCCESS,
+  CREATE_USER_SUCCESS,
+  UPDATE_USER_SUCCESS,
+  DELETE_USER_SUCCESS
+} from '../../src_users/constants'
+import {
+  users,
+  currentUser
+} from '../../src_users/reducers/users'
 
-// unit tests for the users reducers
-// mocha - http://mochajs.org/#getting-started
-// assert - https://nodejs.org/api/assert.html#assert_assert_deepequal_actual_expected_message
-describe('Users reducer', () => {
-  describe('USERS_LIST_SAVE', () => {
-    it('should return a list of users', () => {
-      assert.deepEqual(
-        users({}, {
-          type: 'USERS_LIST_SAVE',
-          users: [{
-            id: 1,
-            username: 'Some name',
-            job: 'Some job',
-          }],
-        }), [{
-          id: 1,
-          username: 'Some name',
-          job: 'Some job',
-        }]
-      );
-    });
-  });
+describe('Users reducers:', () => {
+  const testUsers = [
+    {_id: '1bc', name: "John", lastName: "Doe", phone: "12345673", status: true},
+    {_id: '2bc', name: "Joe", lastName: "Armstrong", phone: "12345674", status: true},
+    {_id: '3bc', name: "José", lastName: "Valim", phone: "12345675", status: true}
+  ]
+  const testUser = {
+    _id: '4bc',
+    name: "Tj",
+    lastName: "Holowaychuk",
+    phone: "12345676",
+    status: true
+  }
 
-  describe('USERS_ADD_SAVE', () => {
-    it('should return a new user array element', () => {
-      assert.deepEqual(
-        users([{
-          id: 1,
-          username: 'Some name',
-          job: 'Some job',
-        }], {
-          type: 'USERS_ADD_SAVE',
-          user: {
-            id: 2,
-            username: 'Other name',
-            job: 'Other job',
-          },
-        }), [{
-          id: 1,
-          username: 'Some name',
-          job: 'Some job',
-        }, {
-          id: 2,
-          username: 'Other name',
-          job: 'Other job',
-        }]
-      );
-    });
-  });
+  it('(users) should return the initial state', () => {
+    assert.deepEqual(users(undefined, {}), [])
+  })
 
-  describe('USERS_EDIT_SAVE', () => {
-    it('should return an edited user array element', () => {
-      assert.deepEqual(
-        users([{
-          id: 1,
-          username: 'Some name',
-          job: 'Some job',
-        }, {
-          id: 2,
-          username: 'Other name',
-          job: 'Other job',
-        }], {
-          type: 'USERS_EDIT_SAVE',
-          user: {
-            id: 2,
-            username: 'Changed name',
-            job: 'Changed job',
-          },
-        }), [{
-          id: 1,
-          username: 'Some name',
-          job: 'Some job',
-        }, {
-          id: 2,
-          username: 'Changed name',
-          job: 'Changed job',
-        }]
-      );
-    });
-  });
+  it('(users) should set users after successful request', () => {
+    const action = {
+      type: FETCH_USERS_SUCCESS,
+      payload: {
+        users: testUsers
+      }
+    }
+    assert.deepEqual(users([], action), testUsers)
+  })
 
-  describe('USERS_DELETE_SAVE', () => {
-    it('should return the user array without the deleted element', () => {
-      assert.deepEqual(
-        users([{
-          id: 1,
-          username: 'Some name',
-          job: 'Some job',
-        }, {
-          id: 2,
-          username: 'Other name',
-          job: 'Other job',
-        }], {
-          type: 'USERS_DELETE_SAVE',
-          user_id: 2,
-        }), [{
-          id: 1,
-          username: 'Some name',
-          job: 'Some job',
-        }]
-      );
-    });
-  });
-});
+  it('(users) should add user after successful creation', () => {
+    const action = {
+      type: CREATE_USER_SUCCESS,
+      payload: {
+        user: testUser
+      }
+    }
+    assert.deepEqual(users(testUsers, action), [...testUsers, testUser])
+  })
+
+  it('(users) should modify user after successful update', () => {
+    const usersBeforeUpdate = [...testUsers, testUser]
+    const updatedUser = {...testUser, name: 'TJ'}
+    const usersAfterUpdate = [...testUsers, updatedUser]
+    const action = {
+      type: UPDATE_USER_SUCCESS,
+      payload: {
+        id: updatedUser._id,
+        user: updatedUser
+      }
+    }
+    assert.deepEqual(users(usersBeforeUpdate, action), usersAfterUpdate)
+  })
+
+  it('(users) should remove user after successful deletion', () => {
+    const usersBeforeDelete = [...testUsers, testUser]
+    const action = {
+      type: DELETE_USER_SUCCESS,
+      payload: {
+        id: testUser._id
+      }
+    }
+    assert.deepEqual(users(usersBeforeDelete, action), testUsers)
+  })
+
+  it('(currentUser) should return the initial state', () => {
+    assert.deepEqual(currentUser(undefined, {}), {})
+  })
+
+  it('(currentUser) should set current user after successful request', () => {
+    const action = {
+      type: FETCH_USER_SUCCESS,
+      payload: {
+        user: testUser
+      }
+    }
+    assert.deepEqual(currentUser({}, action), testUser)
+  })
+})

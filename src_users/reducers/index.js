@@ -1,10 +1,18 @@
-import { combineReducers } from "redux";
-import { routerReducer } from "react-router-redux";
-import { reducer as formReducer } from "redux-form";
-import welcomeItems from "./welcome";
+import { combineReducers } from "redux"
+import { routerReducer } from "react-router-redux"
+import users, * as usersSelectors from "./users"
 
-// main reducers
-export const reducers = combineReducers({
+const rootReducer = combineReducers({
   routing: routerReducer,
-  welcomeItems: welcomeItems,
-});
+  users: users
+})
+
+export default rootReducer
+
+export function getAllUsers({ users }) {
+  return usersSelectors.getAllUsers(users)
+}
+
+export function getCurrentUser({ users }) {
+  return usersSelectors.getCurrentUser(users)
+}
